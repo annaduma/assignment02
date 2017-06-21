@@ -1,3 +1,14 @@
+var tasks = [];
+
+var annaEasy = 0
+var annaMedium = 0
+var annaHard = 0
+var alexEasy = 0
+var alexMedium = 0
+var alexHard = 0
+var binksEasy = 0
+var binksMedium = 0
+var binksHard = 0
 // Google Chart //
 
 // Load the Visualization API and the corechart package.
@@ -12,21 +23,19 @@
       function drawChart() {
 
         // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Person');
-        data.addColumn('number', 'Number of Tasks');
-        data.addColumn({type: 'string', role: 'style'})
-        data.addRows([
-          ['Anna', 3, '#e56285'],
-          ['Alex', 1, '#e5a54d'],
-          ['Mr. Binks', 1, '#5898af']
-        ]);
-
+        var data = new google.visualization.arrayToDataTable([
+          ['Difficulty', 'Easy', 'Medium', 'Hard', { role: 'annotation'}],
+          ['Anna', annaEasy, annaMedium, annaHard, ''],
+          ['Alex', alexEasy, alexMedium, alexHard, ''],
+          ['Mr. Binks', binksEasy, binksMedium, binksHard, '']
+        ])
         // Set chart options
         var options = {'title':'Total Number of Tasks per Person',
-                       'width':500,
-                       'height':300,
-                       legend: {position: 'bottom'}
+                       'width':600,
+                       'height':400,
+                       legend: { position: 'top', maxLines: 3 },
+                       bar: { groupWidth: '75%'},
+                       isStacked: true
                      };
 
 
@@ -34,8 +43,6 @@
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
-
-var tasks = [];
 
 var taskCount = 0;
 function submitButton() {
@@ -46,13 +53,43 @@ function submitButton() {
   if (checked == null) {
     return -1
   }
-  tasks.push(checked.value);
-  tasks.push(document.getElementById("description").value);
-  tasks.push(document.getElementById("difficulty").value);
+  var name = checked.value
+  var desc = document.getElementById("description").value
+  var diff = document.getElementById("difficulty").value
+  tasks.push(name);
+  tasks.push(desc);
+  tasks.push(diff);
   todoList()
   taskCount++;
   document.getElementById("form").reset();
+
+  if (name === "Anna") {
+    if (diff === "Easy")
+      annaEasy++
+    else if (diff === "Medium")
+      annaMedium++
+    else if (diff === "Hard")
+      annaHard++
+  }
+  else if (name === "Alex") {
+    if (diff === "Easy")
+      alexEasy++
+    else if (diff === "Medium")
+      alexMedium++
+    else if (diff === "Hard")
+      alexHard++
+  }
+  else if (name === "Mr. Binks") {
+    if (diff === "Easy")
+      binksEasy++
+    else if (diff === "Medium")
+      binksMedium++
+    else if (diff === "Hard")
+      binksHard++
+  }
+  drawChart()
 }
+
 
 function todoList() {
   var tasksArray = tasks
