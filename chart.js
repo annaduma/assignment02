@@ -13,20 +13,22 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
+        data.addColumn('string', 'Person');
+        data.addColumn('number', 'Number of Tasks');
+        data.addColumn({type: 'string', role: 'style'})
         data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
+          ['Anna', 3, '#e56285'],
+          ['Alex', 1, '#e5a54d'],
+          ['Mr. Binks', 1, '#5898af']
         ]);
 
         // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
+        var options = {'title':'Total Number of Tasks per Person',
                        'width':500,
-                       'height':300};
+                       'height':300,
+                       legend: {position: 'bottom'}
+                     };
+
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
@@ -36,7 +38,7 @@
 var tasks = [];
 
 var taskCount = 0;
-function submitButton(){
+function submitButton() {
   if (event != null) {
     event.preventDefault();
   }
@@ -49,13 +51,14 @@ function submitButton(){
   tasks.push(document.getElementById("difficulty").value);
   todoList()
   taskCount++;
+  document.getElementById("form").reset();
 }
 
-function todoList(){
+function todoList() {
   var tasksArray = tasks
   var div = document.getElementById("list")
   var list = document.createElement("li");
-  var text = tasksArray[taskCount * 3] + " " + tasksArray[taskCount * 3 + 1] + " " + tasksArray[taskCount * 3 + 2];
+  var text = tasksArray[taskCount * 3] + " needs to " + tasksArray[taskCount * 3 + 1] + ". " + "Task diffculty is: " + tasksArray[taskCount * 3 + 2] + ".";
   list.innerHTML = text
   div.appendChild(list)
 }
